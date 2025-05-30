@@ -1,0 +1,75 @@
+QMainWindow {
+background-color: #1E2A44;
+}
+
+QWidget#central_widget {
+background-color: #1E2A44;
+}
+
+QFrame#sidebar {
+background-color: #141B2D;
+}
+
+QFrame#sidebar_expanded {
+    background-color: #141B2D;
+}
+
+QPushButton {
+background-color: #141B2D;
+color: white;
+padding: 5px 15px;
+border: none;
+border-radius: 4px;
+font-size: 14px;
+}
+
+QPushButton:hover {
+background-color: #2A3B5A;
+}
+
+/* Style dla przycisków ikonicznych */
+QPushButton#menu_btn, QPushButton#settings_btn, QPushButton#account_btn {
+background-color: transparent;
+border: none;
+qproperty-iconSize: 24px 24px;
+}
+
+QPushButton#menu_btn:hover, QPushButton#settings_btn:hover, QPushButton#account_btn:hover {
+background-color: #2A3B5A;
+}
+
+/* Style dla przycisków menu */
+QPushButton#btn_home, QPushButton#btn_transactions, QPushButton#btn_planned_transactions, QPushButton#btn_accounts, QPushButton#btn_currency, QPushButton#btn_charts, QPushButton#btn_history, QPushButton#btn_investments, QPushButton#btn_export{
+background-color: transparent;
+color: white;
+text-align: left;
+padding: 10px 20px;
+border: none;
+font-size: 14px;
+}
+
+QPushButton#btn_home:hover, QPushButton#btn_transactions:hover, QPushButton#btn_planned_transactions:hover, QPushButton#btn_accounts:hover, QPushButton#btn_currency:hover, QPushButton#btn_charts:hover, QPushButton#btn_history:hover, QPushButton#btn_investments:hover, QPushButton#btn_export:hover {
+background-color: #2A3B5A;
+}
+
+QTableWidget {
+background-color: white;
+border: 1px solid #cccccc;
+border-radius: 4px;
+}
+
+QLabel {
+color: white;
+}
+
+QComboBox, QLineEdit, QDateEdit {
+background-color: #2A3B5A;
+color: white;
+border: 1px solid #cccccc;
+border-radius: 4px;
+padding: 5px;
+}
+
+QComboBox::drop-down {
+border: none;
+}
