@@ -27,7 +27,6 @@ QPushButton:hover {
 background-color: #2A3B5A;
 }
 
-/* Style dla przycisków ikonicznych */
 QPushButton#menu_btn, QPushButton#settings_btn, QPushButton#account_btn {
 background-color: transparent;
 border: none;
@@ -38,8 +37,7 @@ QPushButton#menu_btn:hover, QPushButton#settings_btn:hover, QPushButton#account_
 background-color: #2A3B5A;
 }
 
-/* Style dla przycisków menu */
-QPushButton#btn_home, QPushButton#btn_transactions, QPushButton#btn_planned_transactions, QPushButton#btn_accounts, QPushButton#btn_currency, QPushButton#btn_charts, QPushButton#btn_history, QPushButton#btn_investments, QPushButton#btn_export{
+QPushButton#btn_home, QPushButton#btn_transactions, QPushButton#btn_planned_transactions, QPushButton#btn_budget, QPushButton#btn_accounts, QPushButton#btn_currency, QPushButton#btn_history, QPushButton#btn_export{
 background-color: transparent;
 color: white;
 text-align: left;
@@ -48,7 +46,7 @@ border: none;
 font-size: 14px;
 }
 
-QPushButton#btn_home:hover, QPushButton#btn_transactions:hover, QPushButton#btn_planned_transactions:hover, QPushButton#btn_accounts:hover, QPushButton#btn_currency:hover, QPushButton#btn_charts:hover, QPushButton#btn_history:hover, QPushButton#btn_investments:hover, QPushButton#btn_export:hover {
+QPushButton#btn_home:hover, QPushButton#btn_transactions:hover, QPushButton#btn_planned_transactions:hover, QPushButton#btn_budget:hover, QPushButton#btn_accounts:hover, QPushButton#btn_currency:hover, QPushButton#btn_history:hover, QPushButton#btn_export:hover {
 background-color: #2A3B5A;
 }
 

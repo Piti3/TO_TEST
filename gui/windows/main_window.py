@@ -4,13 +4,12 @@ from PyQt6.QtGui import QIcon, QFont
 from gui.widgets.transaction_tab import TransactionTable
 from gui.widgets.history_tab import historyTable
 from gui.widgets.currency_converter import CurrencyConverterTable
-from gui.widgets.charts_tab import chartsTable
-from gui.widgets.investments_tab import investmentTable
 from gui.widgets.account_tab import AccountsTable
 from gui.widgets.home_tab import OverviewWidget
 from gui.widgets.export_tab import ExportTab
 from gui.widgets.planned_transaction_tab import PlannedTransactionsTab
-
+from gui.windows.change_password_dialog import ChangePasswordDialog
+from gui.widgets.budget_tab import BudgetTab
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -64,28 +63,28 @@ class MainWindow(QMainWindow):
         self.btn_planned_transactions.setObjectName("btn_planned_transactions")
         self.btn_planned_transactions.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(2))
 
+        self.btn_budget = QPushButton("Budżet")
+        self.btn_budget.setObjectName("btn_budget")
+        self.btn_budget.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(3))
+
         self.btn_accounts = QPushButton("Konta")
         self.btn_accounts.setObjectName("btn_accounts")
-        self.btn_accounts.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(3))
+        self.btn_accounts.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(4))
 
         self.btn_currency = QPushButton("Przelicznik walut")
         self.btn_currency.setObjectName("btn_currency")
-        self.btn_currency.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(4))
+        self.btn_currency.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(5))
 
         self.btn_history = QPushButton("Historia")
         self.btn_history.setObjectName("btn_history")
-        self.btn_history.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(5))
-
-        self.btn_investments = QPushButton("Inwestycje")
-        self.btn_investments.setObjectName("btn_investments")
-        self.btn_investments.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(6))
+        self.btn_history.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(6))
 
         self.btn_export = QPushButton("Eksport")
         self.btn_export.setObjectName("btn_export")
         self.btn_export.clicked.connect(lambda: self.stacked_widget.setCurrentIndex(7))
 
 
-        for btn in [self.btn_home, self.btn_transactions, self.btn_planned_transactions, self.btn_accounts, self.btn_currency, self.btn_history, self.btn_investments, self.btn_export]:
+        for btn in [self.btn_home, self.btn_transactions, self.btn_planned_transactions, self.btn_budget, self.btn_accounts, self.btn_currency, self.btn_history, self.btn_export]:
             btn.setFixedHeight(40)
             self.menu_options_layout.addWidget(btn)
 
@@ -105,6 +104,7 @@ class MainWindow(QMainWindow):
         self.settings_btn.setIcon(QIcon("resources/icons/gear-solid.svg"))
         self.settings_btn.setIconSize(QSize(24, 24))
         self.settings_btn.setFixedSize(75, 60)
+        self.settings_btn.clicked.connect(self.open_change_password)
         self.sidebar_layout.addWidget(self.settings_btn)
 
         self.stacked_widget = QStackedWidget()
@@ -119,6 +119,9 @@ class MainWindow(QMainWindow):
         self.planned_transactions_tab = PlannedTransactionsTab()
         self.stacked_widget.addWidget(self.planned_transactions_tab)
 
+        self.budget_tab = BudgetTab()
+        self.stacked_widget.addWidget(self.budget_tab)
+
         self.accounts_tab = AccountsTable()
         self.stacked_widget.addWidget(self.accounts_tab)
         self.stacked_widget.currentChanged.connect(self.on_tab_changed)
@@ -128,9 +131,6 @@ class MainWindow(QMainWindow):
 
         self.history_tab = historyTable()
         self.stacked_widget.addWidget(self.history_tab)
-
-        self.investments_tab = investmentTable()
-        self.stacked_widget.addWidget(self.investments_tab)
 
         self.export_tab = ExportTab()
         self.stacked_widget.addWidget(self.export_tab)
@@ -166,3 +166,11 @@ class MainWindow(QMainWindow):
     def show_home_tab(self):
         self.overview_tab.refresh()
         self.stacked_widget.setCurrentIndex(0)
+
+    def open_change_password(self):
+        """
+        Metoda wywoływana po kliknięciu ikony USTAWIENIA -> pokazuje 
+        dialog ChangePasswordDialog.
+        """
+        dlg = ChangePasswordDialog(self)
+        dlg.exec()

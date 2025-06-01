@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QHBoxLayout, QLabel, QSizePolicy, QFrame
 from PyQt6.QtCore import Qt
 from core.controllers.overview_controller import OverviewController
+from core.controllers.budget_controller import BudgetController
 from datetime import date
 
 # Matplotlib for charts
@@ -11,6 +12,7 @@ class OverviewWidget(QWidget):
     def __init__(self):
         super().__init__()
         self.ctrl = OverviewController()
+        self.budget_ctrl = BudgetController()
         self._init_ui()
 
     def _init_ui(self):
@@ -36,9 +38,10 @@ class OverviewWidget(QWidget):
             widget = item.widget()
             if widget:
                 widget.deleteLater()
-
+        # --- Karta całkowitego salda ---
         self.container_layout.addWidget(self._create_balance_card())
 
+        # --- Podsumowanie bieżącego miesiąca ---
         today = date.today()
         inc, exp = self.ctrl.month_summary(today.year, today.month)
         period = today.strftime("%B %Y")
@@ -46,6 +49,7 @@ class OverviewWidget(QWidget):
             self._create_month_summary_card("Obecny miesiąc", inc, exp, period)
         )
 
+        # --- Podsumowanie poprzedniego miesiąca ---
         prev_month = today.month-1 or 12
         prev_year = today.year if today.month>1 else today.year-1
         inc2, exp2 = self.ctrl.month_summary(prev_year, prev_month)
@@ -54,21 +58,31 @@ class OverviewWidget(QWidget):
             self._create_month_summary_card("Poprzedni miesiąc", inc2, exp2, prev_period)
         )
 
+        # --- Trend bilansu w roku (wykres liniowy) ---
         data_line  = self.ctrl.yearly_balance_trend()
         line_chart = self._make_line_chart(data_line)
         self.container_layout.addWidget(QLabel("<b>Trend bilansu w roku</b>",
                                       alignment=Qt.AlignmentFlag.AlignCenter))
         self.container_layout.addWidget(line_chart)
 
+        # --- Przychody i wydatki (ostatni tydzień) – wykres słupkowy ---
         data_bar   = self.ctrl.weekly_flow()
         bar_chart  = self._make_bar_chart(data_bar)
         self.container_layout.addWidget(QLabel("<b>Przychody i wydatki (ostatni tydzień)</b>",
                                       alignment=Qt.AlignmentFlag.AlignCenter))
         self.container_layout.addWidget(bar_chart)
 
+        # --- Nowy wykres: Budżet vs. Wydatki (bieżący miesiąc) ---
+        current_year = today.year
+        current_month = today.month
         self.container_layout.addWidget(
-            self._create_transaction_preview()
+            QLabel("<b>Realizacja budżetów – bieżący miesiąc</b>", alignment=Qt.AlignmentFlag.AlignCenter)
         )
+        budget_chart = self._make_budget_bar_chart(current_year, current_month)
+        self.container_layout.addWidget(budget_chart)
+
+        # --- Podgląd ostatnich transakcji ---
+        self.container_layout.addWidget(self._create_transaction_preview())
 
     def refresh(self):
         self.ctrl = OverviewController()
@@ -196,6 +210,50 @@ class OverviewWidget(QWidget):
         bc = FigureCanvas(fig)
         bc.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         return bc
+    
+    def _make_budget_bar_chart(self, year: int, month: int):
+        """
+        Rysuje wykres słupkowy porównujący limity budżetowe z faktycznymi wydatkami
+        w poszczególnych kategoriach dla podanego (rok, miesiąc).
+        Jeżeli nie zdefiniowano żadnego budżetu na dany miesiąc, zwraca QLabel.
+        """
+        budgets = self.budget_ctrl.get_budgets_for_month(year, month)
+        if not budgets:
+            lbl = QLabel("Brak zdefiniowanych budżetów na bieżący miesiąc.")
+            lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            return lbl
+
+        # Przygotowujemy dane: lista kategorii, lista limitów i lista faktycznych wydatków
+        categories = [b.category for b in budgets]
+        limits = [b.limit_amount for b in budgets]
+        spent = [
+            self.budget_ctrl.current_month_spent_for_category(b.category, year, month)
+            for b in budgets
+        ]
+
+        # Rysujemy wykres słupkowy
+        fig = Figure(figsize=(5, 2.5))
+        ax = fig.add_subplot(111)
+        ax.set_facecolor('#222'); fig.set_facecolor('#222')
+
+        # Ustawiamy pozycje słupków
+        import numpy as np
+        x = np.arange(len(categories))
+        width = 0.4
+
+        bars_limit = ax.bar(x - width/2, limits, width, label='Limit', color='#4caf50')
+        bars_spent = ax.bar(x + width/2, spent, width, label='Wydano', color='#f44336')
+
+        ax.set_xticks(x)
+        ax.set_xticklabels(categories, rotation=45, ha='right', color='white')
+        ax.tick_params(colors='white')
+        ax.set_ylabel("Kwota (PLN)", color='white')
+        ax.legend(facecolor='#333', edgecolor='white', labelcolor='white')
+        fig.tight_layout()
+
+        canvas = FigureCanvas(fig)
+        canvas.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        return canvas
 
     def _create_transaction_preview(self):
         frame = QFrame()

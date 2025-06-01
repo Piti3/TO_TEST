@@ -2,14 +2,16 @@
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QTableWidget, QHBoxLayout,
-    QPushButton, QTableWidgetItem, QComboBox, QLabel, QSizePolicy
+    QPushButton, QTableWidgetItem, QComboBox, QLabel, QSizePolicy,QMessageBox
 )
 from PyQt6.QtCore import Qt, QDate
 from PyQt6.QtGui import QFont
 from gui.windows.transaction_dialog import TransactionDialog
 from core.controllers.transaction_controller import TransactionController
 from core.controllers.account_controller import AccountsController
+from core.controllers.budget_controller import BudgetController
 from gui.styles.table_style import apply_transaction_table_style
+
 
 MONTHS = [
     "Styczeń", "Luty", "Marzec", "Kwiecień",
@@ -22,6 +24,7 @@ class TransactionTable(QWidget):
         super().__init__()
         self.tx_controller = TransactionController()
         self.acc_controller = AccountsController()
+        self.budget_controller = BudgetController()
         self.init_ui()
         self.load_transactions()
 
@@ -122,13 +125,36 @@ class TransactionTable(QWidget):
 
 
     def add_tx(self):
-        dlg = TransactionDialog(self)
-        if dlg.exec():
-            data = dlg.get_data()
-            tx_id = self.tx_controller.create_transaction(data)
-            delta = data['amount'] if data['type'] == "Przychód" else -data['amount']
-            self.acc_controller.change_balance(data['account_id'], delta)
-            self.load_transactions()
+            dlg = TransactionDialog(self)
+            if dlg.exec():
+                data = dlg.get_data()
+                # 1) tworzymy Transakcję przez controller
+                tx_id = self.tx_controller.create_transaction(data)
+                # 2) aktualizujemy saldo konta
+                delta = data['amount'] if data['type'] == "Przychód" else -data['amount']
+                self.acc_controller.change_balance(data['account_id'], delta)
+
+                # 3) Jeżeli dodajemy WYDATEK → sprawdźmy budżet
+                if data['type'] == "Wydatek":
+                    # wyciągniemy rok i miesiąc z data['date']
+                    dt = data['date']
+                    cat = data['category']
+                    year = dt.year
+                    month = dt.month
+
+                    budget = self.budget_controller.get_budget_for_category_month(cat, year, month)
+                    if budget:
+                        spent = self.budget_controller.current_month_spent_for_category(cat, year, month)
+                        if spent > budget.limit_amount:
+                            QMessageBox.warning(
+                                self,
+                                "Przekroczenie budżetu",
+                                f"Przekroczyłeś limit budżetu dla kategorii „{cat}”!\n"
+                                f"Limit: {budget.limit_amount:.2f} zł, Wydano: {spent:.2f} zł"
+                            )
+
+                # 4) odśwież tabelę
+                self.load_transactions()
 
     def edit_tx(self):
         row = self.table.currentRow()

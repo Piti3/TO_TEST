@@ -85,5 +85,12 @@ class historyTable(QWidget):
             ]
             for col, text in enumerate(values):
                 item = QTableWidgetItem(text)
-                item.setForeground(QBrush(QColor("black")))
+                item.setForeground(Qt.GlobalColor.black)
+                if col == 2:
+                    if tx.type == "Wydatek":
+                        item.setForeground(Qt.GlobalColor.red)
+                    else:
+                        item.setForeground(Qt.GlobalColor.darkGreen)
+                item.setTextAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
                 self.history_table.setItem(row, col, item)
+

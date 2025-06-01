@@ -20,15 +20,12 @@ class CurrencyConverterTable(QWidget):
         form = QFormLayout()
         form.setLabelAlignment(Qt.AlignmentFlag.AlignRight)
 
-        # Waluta źródłowa
         self.from_cb = QComboBox()
         form.addRow("Z:", self.from_cb)
 
-        # Waluta docelowa
         self.to_cb = QComboBox()
         form.addRow("Na:", self.to_cb)
 
-        # Kwota + przycisk
         amount_layout = QHBoxLayout()
         self.amount_sb = QDoubleSpinBox()
         self.amount_sb.setDecimals(2)
@@ -42,13 +39,11 @@ class CurrencyConverterTable(QWidget):
 
         main_layout.addLayout(form)
 
-        # Wynik pod formularzem
         self.result_lbl = QLabel("")
         self.result_lbl.setStyleSheet("font-size: 16px; font-weight: bold; margin-top: 10px;")
         main_layout.addWidget(self.result_lbl)
         main_layout.addStretch()
 
-        # Załaduj waluty i podłącz sygnał
         self._load_currencies()
         self.convert_btn.clicked.connect(self.on_convert)
 
