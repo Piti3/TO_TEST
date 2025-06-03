@@ -5,8 +5,6 @@ from typing import List, Tuple
 from database.models import Transaction
 from database.session import Session
 from sqlalchemy.orm import joinedload
-
-
 class TransactionController:
     def __init__(self, session_factory=Session):
         self.session_factory = session_factory

@@ -28,7 +28,7 @@ class PlannedTransactionDialog(QDialog):
         self.desc_edit = QLineEdit()
 
         self.freq_cb = QComboBox()
-        self.freq_cb.addItems(["Jednorazowo","Każdego 10","Każdego 15"])
+        self.freq_cb.addItems(["Jednorazowo","Co miesiąc"])
 
         self.account_cb = QComboBox()
         for acc in self.acc_ctrl.list_accounts():

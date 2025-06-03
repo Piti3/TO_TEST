@@ -3,8 +3,6 @@ from PyQt6.QtCore import Qt
 from core.controllers.overview_controller import OverviewController
 from core.controllers.budget_controller import BudgetController
 from datetime import date
-
-# Matplotlib for charts
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
@@ -38,10 +36,8 @@ class OverviewWidget(QWidget):
             widget = item.widget()
             if widget:
                 widget.deleteLater()
-        # --- Karta całkowitego salda ---
         self.container_layout.addWidget(self._create_balance_card())
 
-        # --- Podsumowanie bieżącego miesiąca ---
         today = date.today()
         inc, exp = self.ctrl.month_summary(today.year, today.month)
         period = today.strftime("%B %Y")
@@ -49,7 +45,6 @@ class OverviewWidget(QWidget):
             self._create_month_summary_card("Obecny miesiąc", inc, exp, period)
         )
 
-        # --- Podsumowanie poprzedniego miesiąca ---
         prev_month = today.month-1 or 12
         prev_year = today.year if today.month>1 else today.year-1
         inc2, exp2 = self.ctrl.month_summary(prev_year, prev_month)
@@ -58,21 +53,18 @@ class OverviewWidget(QWidget):
             self._create_month_summary_card("Poprzedni miesiąc", inc2, exp2, prev_period)
         )
 
-        # --- Trend bilansu w roku (wykres liniowy) ---
         data_line  = self.ctrl.yearly_balance_trend()
         line_chart = self._make_line_chart(data_line)
         self.container_layout.addWidget(QLabel("<b>Trend bilansu w roku</b>",
                                       alignment=Qt.AlignmentFlag.AlignCenter))
         self.container_layout.addWidget(line_chart)
 
-        # --- Przychody i wydatki (ostatni tydzień) – wykres słupkowy ---
         data_bar   = self.ctrl.weekly_flow()
         bar_chart  = self._make_bar_chart(data_bar)
         self.container_layout.addWidget(QLabel("<b>Przychody i wydatki (ostatni tydzień)</b>",
                                       alignment=Qt.AlignmentFlag.AlignCenter))
         self.container_layout.addWidget(bar_chart)
 
-        # --- Nowy wykres: Budżet vs. Wydatki (bieżący miesiąc) ---
         current_year = today.year
         current_month = today.month
         self.container_layout.addWidget(
@@ -81,7 +73,6 @@ class OverviewWidget(QWidget):
         budget_chart = self._make_budget_bar_chart(current_year, current_month)
         self.container_layout.addWidget(budget_chart)
 
-        # --- Podgląd ostatnich transakcji ---
         self.container_layout.addWidget(self._create_transaction_preview())
 
     def refresh(self):
@@ -223,7 +214,6 @@ class OverviewWidget(QWidget):
             lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
             return lbl
 
-        # Przygotowujemy dane: lista kategorii, lista limitów i lista faktycznych wydatków
         categories = [b.category for b in budgets]
         limits = [b.limit_amount for b in budgets]
         spent = [
@@ -231,12 +221,10 @@ class OverviewWidget(QWidget):
             for b in budgets
         ]
 
-        # Rysujemy wykres słupkowy
         fig = Figure(figsize=(5, 2.5))
         ax = fig.add_subplot(111)
         ax.set_facecolor('#222'); fig.set_facecolor('#222')
 
-        # Ustawiamy pozycje słupków
         import numpy as np
         x = np.arange(len(categories))
         width = 0.4

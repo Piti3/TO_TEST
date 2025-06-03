@@ -1,4 +1,3 @@
-# gui/widgets/planned_transaction_tab.py
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout,
@@ -83,7 +82,7 @@ class PlannedTransactionsTab(QWidget):
             for col, v in enumerate(vals):
                 item = QTableWidgetItem(v)
                 item.setForeground(Qt.GlobalColor.black)
-                if col == 1:  # „Kwota”
+                if col == 1: 
                     if pt.type == "Wydatek":
                         item.setForeground(Qt.GlobalColor.red)
                     else:

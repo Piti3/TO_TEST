@@ -50,9 +50,9 @@ class AccountsTable(QWidget):
         self.layout.addWidget(self.accounts_list)
 
         btn_layout = QHBoxLayout()
-        self.add_button = QPushButton("Dodaj konto")
-        self.edit_button = QPushButton("Edytuj konto")
-        self.delete_button = QPushButton("Usuń konto")
+        self.add_button = QPushButton("Dodaj")
+        self.edit_button = QPushButton("Edytuj")
+        self.delete_button = QPushButton("Usuń")
         for btn in (self.add_button, self.edit_button, self.delete_button):
             btn.setMinimumHeight(30)
             btn_layout.addWidget(btn)

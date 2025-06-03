@@ -1,4 +1,3 @@
-# gui/widgets/export_tab.py
 
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QMessageBox, QFileDialog, QHBoxLayout
 from core.controllers.export_controller import ExportController

@@ -6,7 +6,6 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import QDate, Qt
 from PyQt6.QtGui import QBrush, QColor
 from core.controllers.history_controller import HistoryController
-
 from gui.styles.table_style import apply_history_table_style
 
 class historyTable(QWidget):

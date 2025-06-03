@@ -1,4 +1,3 @@
-# gui/widgets/budget_tab.py
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout,
@@ -14,7 +13,7 @@ class BudgetTab(QWidget):
         super().__init__()
         self.ctrl = BudgetController()
         self._init_ui()
-        # Domyślnie załaduj budżety bieżącego miesiąca
+
         today = QDate.currentDate()
         self.year_cb.setCurrentText(str(today.year()))
         self.month_cb.setCurrentIndex(today.month() - 1)
@@ -25,7 +24,6 @@ class BudgetTab(QWidget):
         main_layout.setContentsMargins(5, 5, 5, 5)
         main_layout.setSpacing(10)
 
-        # Górny pasek: wybór roku i miesiąca + Odśwież
         top_layout = QHBoxLayout()
         top_layout.addWidget(QLabel("Rok:"))
 
@@ -53,7 +51,6 @@ class BudgetTab(QWidget):
         top_layout.addStretch()
         main_layout.addLayout(top_layout)
 
-        # Tabela budżetów
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(["Kategoria", "Rok", "Miesiąc", "Limit"])
@@ -73,7 +70,6 @@ class BudgetTab(QWidget):
             btn_layout.addWidget(btn)
 
         main_layout.addLayout(btn_layout)
-        # Połączenie sygnałów
         self.btn_refresh.clicked.connect(self._load_budgets)
         self.year_cb.currentIndexChanged.connect(self._load_budgets)
         self.month_cb.currentIndexChanged.connect(self._load_budgets)
@@ -82,9 +78,6 @@ class BudgetTab(QWidget):
         self.btn_delete.clicked.connect(self._delete_budget)
 
     def _load_budgets(self):
-        """
-        Ładuje z kontrolera budżety dla wybranego (rok,miesiąc) i pokazuje je w tabeli.
-        """
         year = int(self.year_cb.currentText())
         month = self.month_cb.currentIndex() + 1
         budgets = self.ctrl.get_budgets_for_month(year, month)
@@ -106,11 +99,7 @@ class BudgetTab(QWidget):
         self.table.resizeColumnsToContents()
 
     def _add_budget(self):
-        """
-        Otwiera dialog dodania nowego budżetu (domyślnie w bieżącym miesiącu).
-        """
         dlg = BudgetDialog(parent=self)
-        # Ustaw domyślne wartości: bieżący rok i miesiąc
         today = QDate.currentDate()
         dlg.year_spin.setValue(today.year())
         dlg.month_spin.setValue(today.month())
@@ -123,7 +112,6 @@ class BudgetTab(QWidget):
         row = self.table.currentRow()
         if row < 0:
             return
-        # Pobierz budżet z controllera
         year = int(self.year_cb.currentText())
         month = self.month_cb.currentIndex() + 1
         budgets = self.ctrl.get_budgets_for_month(year, month)
@@ -142,6 +130,6 @@ class BudgetTab(QWidget):
         month = self.month_cb.currentIndex() + 1
         budgets = self.ctrl.get_budgets_for_month(year, month)
         budget = budgets[row]
-        # Możesz dodać QMessageBox confirmation tutaj
+
         self.ctrl.delete_budget(budget.id)
         self._load_budgets()

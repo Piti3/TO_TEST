@@ -1,4 +1,3 @@
-# gui/widgets/currency_converter.py
 
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QFormLayout,
@@ -57,7 +56,7 @@ class CurrencyConverterTable(QWidget):
             self.from_cb.addItem(label, code)
             self.to_cb.addItem(label, code)
 
-        # Domyślnie PLN → EUR
+        # PLN → EUR
         i_pln = self.from_cb.findData("PLN")
         i_eur = self.to_cb.findData("EUR")
         if i_pln >= 0: self.from_cb.setCurrentIndex(i_pln)

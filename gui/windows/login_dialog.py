@@ -1,4 +1,3 @@
-# gui/windows/login_dialog.py
 
 import hashlib
 from PyQt6.QtWidgets import (
@@ -18,19 +17,17 @@ class LoginDialog(QDialog):
 
     def _init_ui(self):
         layout = QVBoxLayout(self)
-        # Nagłówek
+  
         self.lbl_info = QLabel("Podaj hasło dostępu:")
         self.lbl_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.lbl_info)
 
-        # Pole do wpisania hasła
         form_layout = QFormLayout()
         self.password_edit = QLineEdit()
         self.password_edit.setEchoMode(QLineEdit.EchoMode.Password)
         form_layout.addRow("Hasło:", self.password_edit)
         layout.addLayout(form_layout)
 
-        # Przyciski
         btn_layout = QHBoxLayout()
         self.btn_ok = QPushButton("Zaloguj")
         self.btn_cancel = QPushButton("Anuluj")

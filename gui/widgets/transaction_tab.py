@@ -5,7 +5,6 @@ from PyQt6.QtWidgets import (
     QPushButton, QTableWidgetItem, QComboBox, QLabel, QSizePolicy,QMessageBox
 )
 from PyQt6.QtCore import Qt, QDate
-from PyQt6.QtGui import QFont
 from gui.windows.transaction_dialog import TransactionDialog
 from core.controllers.transaction_controller import TransactionController
 from core.controllers.account_controller import AccountsController
@@ -33,7 +32,6 @@ class TransactionTable(QWidget):
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(5)
 
-        # górny wybór miesiąca i roku
         header_layout = QHBoxLayout()
         header_layout.setContentsMargins(5, 5, 5, 5)
         header_layout.setSpacing(10)
@@ -61,7 +59,6 @@ class TransactionTable(QWidget):
 
         main_layout.addLayout(header_layout)
 
-        #tabela z przewijaniem
         self.table = QTableWidget()
         self.table.setColumnCount(7)
         self.table.setHorizontalHeaderLabels([
@@ -128,15 +125,11 @@ class TransactionTable(QWidget):
             dlg = TransactionDialog(self)
             if dlg.exec():
                 data = dlg.get_data()
-                # 1) tworzymy Transakcję przez controller
                 tx_id = self.tx_controller.create_transaction(data)
-                # 2) aktualizujemy saldo konta
                 delta = data['amount'] if data['type'] == "Przychód" else -data['amount']
                 self.acc_controller.change_balance(data['account_id'], delta)
 
-                # 3) Jeżeli dodajemy WYDATEK → sprawdźmy budżet
                 if data['type'] == "Wydatek":
-                    # wyciągniemy rok i miesiąc z data['date']
                     dt = data['date']
                     cat = data['category']
                     year = dt.year
@@ -153,7 +146,6 @@ class TransactionTable(QWidget):
                                 f"Limit: {budget.limit_amount:.2f} zł, Wydano: {spent:.2f} zł"
                             )
 
-                # 4) odśwież tabelę
                 self.load_transactions()
 
     def edit_tx(self):
