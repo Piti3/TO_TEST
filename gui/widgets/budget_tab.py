@@ -1,12 +1,9 @@
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout,
-    QTableWidget, QTableWidgetItem,
-    QPushButton, QLabel, QComboBox, QSpinBox, QSizePolicy
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,QTableWidget, QTableWidgetItem,QPushButton, QLabel, QComboBox, QSizePolicy)
 from PyQt6.QtCore import Qt, QDate
 from core.controllers.budget_controller import BudgetController
 from gui.windows.budget_dialog import BudgetDialog
+from gui.styles.table_style import apply_budget_table_style
 
 class BudgetTab(QWidget):
     def __init__(self):
@@ -57,6 +54,7 @@ class BudgetTab(QWidget):
         self.table.setEditTriggers(self.table.EditTrigger.NoEditTriggers)
         self.table.setSelectionBehavior(self.table.SelectionBehavior.SelectRows)
         self.table.setSelectionMode(self.table.SelectionMode.SingleSelection)
+        apply_budget_table_style(self.table)
         main_layout.addWidget(self.table)
 
         # Dolny pasek CRUD

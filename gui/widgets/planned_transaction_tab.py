@@ -1,12 +1,8 @@
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout,
-    QTableWidget, QPushButton, QLabel, QTableWidgetItem
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout,QTableWidget, QPushButton, QLabel, QTableWidgetItem)
 from PyQt6.QtCore import QDate, Qt
 from core.controllers.planned_transaction_controller import PlannedTransactionController
 from gui.windows.planned_transaction_dialog import PlannedTransactionDialog
-
 from gui.widgets.marked_calendar import MarkedCalendar
 from gui.styles.table_style import apply_planned_transaction_table_style
 

@@ -1,9 +1,5 @@
-# ≡≡≡ gui/widgets/transaction_tab.py ≡≡≡
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QTableWidget, QHBoxLayout,
-    QPushButton, QTableWidgetItem, QComboBox, QLabel, QSizePolicy,QMessageBox
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QTableWidget, QHBoxLayout,QPushButton, QTableWidgetItem, QComboBox, QLabel, QSizePolicy,QMessageBox)
 from PyQt6.QtCore import Qt, QDate
 from gui.windows.transaction_dialog import TransactionDialog
 from core.controllers.transaction_controller import TransactionController

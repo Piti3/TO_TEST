@@ -1,4 +1,3 @@
-# core/controllers/currency_controller.py
 
 from typing import List
 from core.repositories.currency_repository import CurrencyRepository

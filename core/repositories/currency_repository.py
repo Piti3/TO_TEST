@@ -4,10 +4,6 @@ import json
 from typing import Dict
 
 class CurrencyRepository:
-    """
-    Odpowiada za pobranie i przechowanie kursów z API NBP
-    bez potrzeby instalowania requests.
-    """
     API_URL = "https://api.nbp.pl/api/exchangerates/tables/a/?format=json"
 
     def __init__(self):

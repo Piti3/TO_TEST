@@ -1,13 +1,8 @@
-# database/models/app_config.py
 
 from sqlalchemy import Column, Integer, String
 from database.base import Base
 
 class AppConfig(Base):
-    """
-    Prosta tabela do przechowywania klucza/wartości w bazie.
-    W tej chwili użyjemy jej tylko do przechowywania 'password_hash'.
-    """
     __tablename__ = 'app_config'
 
     id = Column(Integer, primary_key=True)

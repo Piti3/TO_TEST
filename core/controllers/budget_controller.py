@@ -1,5 +1,3 @@
-# core/controllers/budget_controller.py
-
 from typing import List, Optional
 from core.repositories.budget_repository import BudgetRepository
 from database.models.budget import Budget

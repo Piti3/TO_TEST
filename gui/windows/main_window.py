@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout, QHBoxLayout, QWidget, QLabel, QPushButton, QFrame
-from PyQt6.QtCore import Qt, QSize
-from PyQt6.QtGui import QIcon, QFont
+from PyQt6.QtWidgets import QMainWindow, QStackedWidget, QVBoxLayout, QHBoxLayout, QWidget, QPushButton, QFrame
+from PyQt6.QtCore import QSize
+from PyQt6.QtGui import QIcon
 from gui.widgets.transaction_tab import TransactionTable
 from gui.widgets.history_tab import historyTable
 from gui.widgets.currency_converter import CurrencyConverterTable

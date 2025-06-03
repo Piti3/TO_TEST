@@ -1,10 +1,5 @@
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
-    QDateEdit, QComboBox, QLineEdit, QPushButton,
-    QTableWidget, QTableWidgetItem
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,QDateEdit, QComboBox, QLineEdit, QPushButton,QTableWidget, QTableWidgetItem)
 from PyQt6.QtCore import QDate, Qt
-from PyQt6.QtGui import QBrush, QColor
 from core.controllers.history_controller import HistoryController
 from gui.styles.table_style import apply_history_table_style
 

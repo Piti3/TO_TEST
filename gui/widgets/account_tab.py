@@ -1,8 +1,5 @@
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QPushButton, QLabel,
-    QListWidget, QListWidgetItem, QMessageBox, QHBoxLayout
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QPushButton, QLabel,QListWidget, QListWidgetItem, QMessageBox, QHBoxLayout)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QColor, QBrush
 from gui.windows.add_account_dialog import AddAccountDialog

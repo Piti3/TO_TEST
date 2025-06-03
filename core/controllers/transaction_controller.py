@@ -1,7 +1,7 @@
 
 from datetime import date
 import calendar
-from typing import List, Tuple
+from typing import List
 from database.models import Transaction
 from database.session import Session
 from sqlalchemy.orm import joinedload

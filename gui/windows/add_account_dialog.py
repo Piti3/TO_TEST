@@ -1,8 +1,4 @@
-from PyQt6.QtWidgets import (
-    QDialog, QFormLayout, QLineEdit, QComboBox,
-    QDialogButtonBox, QDoubleSpinBox
-)
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (QDialog, QFormLayout, QLineEdit, QComboBox,QDialogButtonBox, QDoubleSpinBox)
 from core.controllers.account_controller import AccountsController
 
 class AddAccountDialog(QDialog):

@@ -1,10 +1,8 @@
-# core/controllers/export_controller.py
 
 import os
 from datetime import datetime
-import pandas as pd  # pandas do obsługi DataFrame i zapisu do Excela
+import pandas as pd
 
-# reportlab (platypus) do generowania „pięknego” PDF-a
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import cm, mm
@@ -79,13 +77,11 @@ class ExportController:
                 "font_color": "white",
                 "border": 1
             })
-            # Dla zakładki Accounts
             worksheet_acc = writer.sheets["Accounts"]
             for col_num, value in enumerate(df_accounts.columns.values):
                 worksheet_acc.set_column(col_num, col_num, 15)  # szerokość każdej kolumny
                 worksheet_acc.write(0, col_num, value, header_format)
 
-            # Dla zakładki Transactions
             worksheet_t = writer.sheets["Transactions"]
             for col_num, value in enumerate(df_txs.columns.values):
                 worksheet_t.set_column(col_num, col_num, 15)

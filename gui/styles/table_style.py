@@ -73,3 +73,13 @@ def apply_history_table_style(table: QTableWidget):
     header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)# Kategoria
     header.setSectionResizeMode(4, QHeaderView.ResizeMode.Stretch) # Kategoria
     header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch) # Opis
+
+def apply_budget_table_style(table: QTableWidget):
+
+    apply_generic_table_style(table)
+
+    header = table.horizontalHeader()
+    header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)  # Kategoria
+    header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)  # Rok
+    header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)  # Miesiąc
+    header.setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)  # Limit
