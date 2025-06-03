@@ -1,9 +1,8 @@
 
 from PyQt6.QtWidgets import QDialog, QFormLayout, QLineEdit, QComboBox, QDateEdit, QPushButton, QHBoxLayout, QLabel
 from PyQt6.QtCore import QDate
-from database import Session, Account, Transaction
+from database import Account
 from core.repositories.account_repository import AccountRepository
-import datetime
 
 class TransactionDialog(QDialog):
     def __init__(self, parent=None, transaction=None):
@@ -81,7 +80,6 @@ class TransactionDialog(QDialog):
             'account_id': acc_id
         }
         return data
-
 
     def on_accept(self):
         self.accept()

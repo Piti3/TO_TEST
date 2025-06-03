@@ -5,6 +5,7 @@ from typing import List
 from database.models import Transaction
 from database.session import Session
 from sqlalchemy.orm import joinedload
+
 class TransactionController:
     def __init__(self, session_factory=Session):
         self.session_factory = session_factory
@@ -46,7 +47,7 @@ class TransactionController:
                     .all()
             )
         return txs
-    
+
     def create_transaction(self, data: dict) -> int:
         with self.session_factory() as session:
             t = Transaction(**data)
@@ -63,4 +64,10 @@ class TransactionController:
                 setattr(tx, k, v)
             session.commit()
 
-    
+    def delete_transaction(self, tx_id: int):
+
+        with self.session_factory() as session:
+            tx = session.query(Transaction).get(tx_id)
+            if tx:
+                session.delete(tx)
+                session.commit()

@@ -1,9 +1,6 @@
 
 import hashlib
-from PyQt6.QtWidgets import (
-    QDialog, QFormLayout, QLineEdit, QPushButton,
-    QLabel, QMessageBox, QHBoxLayout, QVBoxLayout
-)
+from PyQt6.QtWidgets import (QDialog, QFormLayout, QLineEdit, QPushButton,QLabel, QMessageBox, QHBoxLayout, QVBoxLayout)
 from PyQt6.QtCore import Qt
 from core.controllers.settings_controller import SettingsController
 

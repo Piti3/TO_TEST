@@ -1,11 +1,12 @@
 from datetime import date
 from typing import List, Optional
-from core.repositories.account_repository import AccountRepository
+from core.repositories.transaction_repository import TransactionRepository
 from database.models import Transaction
 
 class HistoryController:
-    def __init__(self, repo: AccountRepository = None):
-        self.repo = repo or AccountRepository()
+
+    def __init__(self, repo: TransactionRepository = None):
+        self.repo = repo or TransactionRepository()
 
     def fetch_transactions(
         self,
@@ -14,9 +15,4 @@ class HistoryController:
         category: Optional[str] = None,
         description_contains: Optional[str] = None
     ) -> List[Transaction]:
-        return self.repo.get_transactions(
-            date_from=date_from,
-            date_to=date_to,
-            category=category,
-            description_contains=description_contains
-        )
+        return self.repo.get_transactions_for_period(date_from, date_to, category, description_contains)

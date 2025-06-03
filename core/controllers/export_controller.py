@@ -5,18 +5,10 @@ import pandas as pd
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
-from reportlab.lib.units import cm, mm
-from reportlab.platypus import (
-    SimpleDocTemplate,
-    Paragraph,
-    Spacer,
-    Table,
-    TableStyle,
-    PageBreak,
-)
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak)
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER
-
+from sqlalchemy.orm import joinedload
 from database.models.account import Account
 from database.models.transaction import Transaction
 from database.session import Session
@@ -24,20 +16,27 @@ from database.session import Session
 
 class ExportController:
     def __init__(self):
-        self.session = Session()
+        pass
 
     def fetch_accounts(self):
-        return self.session.query(Account).order_by(Account.id).all()
+        with Session() as session:
+            return session.query(Account).order_by(Account.id).all()
 
     def fetch_transactions(self):
-        return self.session.query(Transaction).order_by(Transaction.date).all()
+
+        with Session() as session:
+            txs: list[Transaction] = (
+                session.query(Transaction)
+                       .options(joinedload(Transaction.account))
+                       .order_by(Transaction.date)
+                       .all()
+            )
+            return txs
 
     def export_all_excel(self, path: str) -> str:
-
         if not path.lower().endswith(".xlsx"):
             path = path + ".xlsx"
-        
-        #Konta
+
         accounts = self.fetch_accounts()
         accounts_data = []
         for a in accounts:
@@ -49,7 +48,6 @@ class ExportController:
             })
         df_accounts = pd.DataFrame(accounts_data)
 
-        #transakcje
         txs = self.fetch_transactions()
         tx_data = []
         for t in txs:
@@ -71,28 +69,27 @@ class ExportController:
             df_txs.to_excel(writer, sheet_name="Transactions", index=False)
 
             workbook = writer.book
+
             header_format = workbook.add_format({
                 "bold": True,
                 "bg_color": "#4F81BD",
                 "font_color": "white",
                 "border": 1
             })
+
             worksheet_acc = writer.sheets["Accounts"]
             for col_num, value in enumerate(df_accounts.columns.values):
-                worksheet_acc.set_column(col_num, col_num, 15)  # szerokość każdej kolumny
+                worksheet_acc.set_column(col_num, col_num, 15)
                 worksheet_acc.write(0, col_num, value, header_format)
 
-            worksheet_t = writer.sheets["Transactions"]
+            worksheet_tx = writer.sheets["Transactions"]
             for col_num, value in enumerate(df_txs.columns.values):
-                worksheet_t.set_column(col_num, col_num, 15)
-                worksheet_t.write(0, col_num, value, header_format)
-
-            writer.save()
+                worksheet_tx.set_column(col_num, col_num, 15)
+                worksheet_tx.write(0, col_num, value, header_format)
 
         return os.path.abspath(path)
 
     def export_pdf(self, path: str) -> str:
-
         if not path.lower().endswith(".pdf"):
             path = f"{path}.pdf"
 
@@ -131,12 +128,11 @@ class ExportController:
         elements.append(Paragraph(f"Data wygenerowania: {now_str}", date_style))
         elements.append(Spacer(1, 12))
 
+        # Konta
         elements.append(Paragraph("Konta:", styles["Heading2"]))
         elements.append(Spacer(1, 6))
 
-        acc_table_data = [
-            ["ID", "Nazwa", "Saldo", "Typ"]
-        ]
+        acc_table_data = [["ID", "Nazwa", "Saldo", "Typ"]]
         for a in accounts:
             acc_table_data.append([
                 a.id,
@@ -161,12 +157,11 @@ class ExportController:
         elements.append(t_acc)
         elements.append(PageBreak())
 
+        #Transakcje
         elements.append(Paragraph("Transakcje:", styles["Heading2"]))
         elements.append(Spacer(1, 6))
 
-        tx_table_data = [
-            ["ID", "Data", "Typ", "Kwota", "Waluta", "Kategoria", "Opis", "Konto ID", "Nazwa Konta"]
-        ]
+        tx_table_data = [["ID", "Data", "Typ", "Kwota", "Waluta", "Kategoria", "Opis", "Konto ID", "Nazwa Konta"]]
         for t in txs:
             tx_table_data.append([
                 t.id,

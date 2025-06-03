@@ -8,7 +8,7 @@ class Transaction(Base):
 
     id = Column(Integer, primary_key=True)
     date = Column(Date, default=datetime.date.today)
-    type = Column(String, nullable=False)       # "Wydatek" lub "Przychód"
+    type = Column(String, nullable=False) 
     amount = Column(Float, nullable=False)
     currency = Column(String, default="PLN")
     category = Column(String)

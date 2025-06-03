@@ -6,10 +6,6 @@ from database.session import Session
 from datetime import date
 
 class BudgetController:
-    """
-    Controller odpowiedzialny za operacje na budżetach (tworzenie, aktualizacja, usuwanie)
-    oraz pomocniczo: sprawdzanie stanu wydatków w danym miesiącu vs. limit.
-    """
     def __init__(self, repo: BudgetRepository = None, session_factory=Session):
         self.repo = repo or BudgetRepository(session_factory)
         self.session_factory = session_factory
@@ -24,9 +20,6 @@ class BudgetController:
         return self.repo.get_budgets_for_month(year, month)
 
     def create_budget(self, data: dict) -> int:
-        """
-        `data` to dict z polami: 'category', 'year', 'month', 'limit_amount'
-        """
         return self.repo.add_budget(
             data['category'], data['year'], data['month'], data['limit_amount']
         )
@@ -44,9 +37,6 @@ class BudgetController:
         return self.repo.find_budget_for_category_month(category, year, month)
 
     def current_month_spent_for_category(self, category: str, year: int, month: int) -> float:
-        """
-        Zwraca sumę wydatków (Transaction.type == 'Wydatek') dla danej kategorii w zadanym roku/miesiącu.
-        """
         with self.session_factory() as session:
             total = (
                 session

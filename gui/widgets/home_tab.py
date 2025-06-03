@@ -203,11 +203,7 @@ class OverviewWidget(QWidget):
         return bc
     
     def _make_budget_bar_chart(self, year: int, month: int):
-        """
-        Rysuje wykres słupkowy porównujący limity budżetowe z faktycznymi wydatkami
-        w poszczególnych kategoriach dla podanego (rok, miesiąc).
-        Jeżeli nie zdefiniowano żadnego budżetu na dany miesiąc, zwraca QLabel.
-        """
+
         budgets = self.budget_ctrl.get_budgets_for_month(year, month)
         if not budgets:
             lbl = QLabel("Brak zdefiniowanych budżetów na bieżący miesiąc.")

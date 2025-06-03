@@ -171,14 +171,15 @@ class TransactionTable(QWidget):
         row = self.table.currentRow()
         if row < 0:
             return
+
         year = int(self.year_cb.currentText())
         month = self.month_cb.currentIndex() + 1
         txs = self.tx_controller.get_transactions_for_month(year, month)
         tx = txs[row]
 
-        with self.tx_controller.session_factory() as s:
-            s.delete(tx)
-            s.commit()
+        self.tx_controller.delete_transaction(tx.id)
+
         delta = -tx.amount if tx.type == "Przychód" else tx.amount
         self.acc_controller.change_balance(tx.account_id, delta)
+
         self.load_transactions()

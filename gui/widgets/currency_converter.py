@@ -1,9 +1,5 @@
 
-from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QFormLayout,
-    QLabel, QComboBox, QDoubleSpinBox,
-    QPushButton, QHBoxLayout, 
-)
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QFormLayout,QLabel, QComboBox, QDoubleSpinBox,QPushButton, QHBoxLayout)
 from PyQt6.QtCore import Qt
 from core.controllers.currency_controller import CurrencyController
 

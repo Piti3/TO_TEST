@@ -1,4 +1,3 @@
-# core/repositories/settings_repository.py
 
 from database.models.app_config import AppConfig
 from database.session import Session

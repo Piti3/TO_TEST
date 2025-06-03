@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QDialog, QFormLayout,
     QLineEdit, QComboBox, QSpinBox,
     QDoubleSpinBox, QDialogButtonBox,
-    QLabel, QHBoxLayout, QMessageBox
+    QMessageBox
 )
 from PyQt6.QtCore import Qt, QDate
 from core.controllers.account_controller import AccountsController

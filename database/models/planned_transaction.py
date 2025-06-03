@@ -12,6 +12,7 @@ class PlannedTransaction(Base):
     currency = Column(String, default="PLN")
     category = Column(String)
     description = Column(String)
-    frequency = Column(String, nullable=False)  # 'once' or 'monthly'
+    frequency = Column(String, nullable=False)
     account_id = Column(Integer, ForeignKey('accounts.id'), nullable=False)
+   
     account = relationship('Account')

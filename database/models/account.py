@@ -8,7 +8,7 @@ class Account(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     balance = Column(Float, default=0.0)
-    type = Column(String, default="Normalny")  # np. gotówka, karta, bank
+    type = Column(String, default="Normalny")
 
     transactions = relationship("Transaction", back_populates="account")
 

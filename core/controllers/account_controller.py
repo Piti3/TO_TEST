@@ -7,8 +7,6 @@ class AccountsController:
         self.repo = repo or AccountRepository()
 
     def list_accounts(self) -> List[Account]:
-        for acc in self.repo.get_all_accounts():
-            self.repo.update_account_balance_from_transactions(acc.id)
         return self.repo.get_all_accounts()
 
     def get_account(self, account_id: int) -> Optional[Account]:

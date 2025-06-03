@@ -8,7 +8,6 @@ class PlannedTransactionController:
         self.session_factory = session_factory
 
     def list_for_date(self, date):
-        """Zwraca listę zaplanowanych transakcji dla konkretnej daty wraz z kontem (eager load)."""
         with self.session_factory() as session:
             pts = (
                 session
@@ -20,7 +19,6 @@ class PlannedTransactionController:
             return pts
 
     def create(self, data):
-        """Tworzy nową zaplanowaną transakcję"""
         with self.session_factory() as session:
             pt = PlannedTransaction(**data)
             session.add(pt)
