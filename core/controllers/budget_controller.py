@@ -1,14 +1,10 @@
 from typing import List, Optional
 from core.repositories.budget_repository import BudgetRepository
 from database.models.budget import Budget
-from database.models.transaction import Transaction
-from database.session import Session
-from datetime import date
 
 class BudgetController:
-    def __init__(self, repo: BudgetRepository = None, session_factory=Session):
-        self.repo = repo or BudgetRepository(session_factory)
-        self.session_factory = session_factory
+    def __init__(self, repo: BudgetRepository = None):
+        self.repo = repo or BudgetRepository()
 
     def list_all_budgets(self) -> List[Budget]:
         return self.repo.get_all_budgets()
@@ -37,16 +33,4 @@ class BudgetController:
         return self.repo.find_budget_for_category_month(category, year, month)
 
     def current_month_spent_for_category(self, category: str, year: int, month: int) -> float:
-        with self.session_factory() as session:
-            total = (
-                session
-                .query(Transaction)
-                .filter(
-                    Transaction.type == "Wydatek",
-                    Transaction.category == category,
-                    Transaction.date >= date(year, month, 1),
-                    Transaction.date < (date(year + (month // 12), ((month % 12) + 1), 1))
-                )
-                .all()
-            )
-            return sum(t.amount for t in total)
+        return self.repo.calculate_spent_for_category_month(category, year, month)

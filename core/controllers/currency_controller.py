@@ -16,5 +16,6 @@ class CurrencyController:
     def convert(self, from_code: str, to_code: str, amount: float) -> float:
         rate_from = self.get_rate(from_code)
         rate_to   = self.get_rate(to_code)
+        
         in_pln = amount * rate_from
         return in_pln / rate_to if rate_to else 0.0

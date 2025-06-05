@@ -2,6 +2,8 @@
 from typing import List, Optional
 from database.models.budget import Budget
 from database.session import Session
+from database.models.transaction import Transaction
+from datetime import date
 
 class BudgetRepository:
     def __init__(self, session_factory=Session):
@@ -57,3 +59,22 @@ class BudgetRepository:
                 .order_by(Budget.category)
                 .all()
             )
+        
+    def calculate_spent_for_category_month(self, category: str, year: int, month: int) -> float:
+        start_date = date(year, month, 1)
+        next_month = (month % 12) + 1
+        next_year = year + (month // 12) if next_month == 1 else year
+        end_date = date(next_year, next_month, 1)
+
+        with self.session_factory() as session:
+            transactions = (
+                session.query(Transaction)
+                       .filter(
+                           Transaction.type == "Wydatek",
+                           Transaction.category == category,
+                           Transaction.date >= start_date,
+                           Transaction.date < end_date
+                       )
+                       .all()
+            )
+            return sum(t.amount for t in transactions)

@@ -84,3 +84,10 @@ class TransactionRepository(BaseRepository[Transaction]):
             for k, v in data.items():
                 setattr(t, k, v)
             session.commit()
+
+    def delete(self, tx_id: int) -> None:
+        with self._session_factory() as session:
+            tx = session.get(Transaction, tx_id)
+            if tx:
+                session.delete(tx)
+                session.commit()
